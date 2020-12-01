@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StepProgressBar">
+        <attr name="innerPadding" format="dimension" />
+        <attr name="backgroundBarColor" format="color" />
+        <attr name="successfulStepColor" format="color" />
+        <attr name="failureStepColor" format="color" />
+        <attr name="stepCount" format="integer" />
+    </declare-styleable>
+</resources>
