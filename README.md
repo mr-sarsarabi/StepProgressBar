@@ -67,7 +67,7 @@ This Library is totally free! feel free to use it...
     stepProgressBar.setStepSates(new Boolean[]{true, false, true, true, null});
     
     stepProgressBar.setStepCount(5);
-    stepProgressBar.setSuccessfulStepColor(0xffffff);
-    stepProgressBar.setFailureStepColor(0xffffff);
-    stepProgressBar.setBackgroundColor(0xffffff);
-    stepProgressBar.setInnerPadding(0xffffff);
+    stepProgressBar.setSuccessfulStepColor(0xFFC107);
+    stepProgressBar.setFailureStepColor(0xB92926);
+    stepProgressBar.setBackgroundColor(0x493A0D);
+    stepProgressBar.setInnerPadding(dpToPx(8, context));
