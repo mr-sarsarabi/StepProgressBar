@@ -1,4 +1,4 @@
-![blob](https://jitpack.io/#mr-sarsarabi/StepProgressBar/v1.0)
+[![](https://jitpack.io/v/mr-sarsarabi/StepProgressBar.svg)](https://jitpack.io/#mr-sarsarabi/StepProgressBar)
 
 This Library is totally free! feel free to use it...
 
