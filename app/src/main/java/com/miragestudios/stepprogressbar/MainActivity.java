@@ -12,6 +12,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         StepProgressBar stepProgressBar = findViewById(R.id.step_progress_bar);
         stepProgressBar.setStepCount(5);
+        stepProgressBar.setSuccessfulStepColor(0xfff);
+        stepProgressBar.setFailureStepColor(0xfff);
+        stepProgressBar.setBackgroundColor(0xfff);
+        stepProgressBar.setInnerPadding(0xfff);
         stepProgressBar.setStepSates(new Boolean[]{true, false, true, true, true});
         StepProgressBar stepProgressBar2 = findViewById(R.id.step_progress_bar2);
         stepProgressBar2.setStepCount(7);
