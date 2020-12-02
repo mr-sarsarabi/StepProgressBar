@@ -61,7 +61,10 @@ This Library is totally free! feel free to use it...
 
     StepProgressBar stepProgressBar = findViewById(R.id.step_progress_bar);
     
-    stepProgressBar.setStepSates(new Boolean[]{true, false, true, true, true});
+    //true will set the step color to successfulStepColor
+    //false will set the step color to failureStepColor
+    //null will not draw the step
+    stepProgressBar.setStepSates(new Boolean[]{true, false, true, true, null});
     
     stepProgressBar.setStepCount(5);
     stepProgressBar.setSuccessfulStepColor(0xffffff);
