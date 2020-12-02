@@ -45,6 +45,8 @@ This Library is totally free! feel free to use it...
 
 ## Usage:
 
+Look at sample app for more details.
+
 **Xml:**
 
     <com.miragestudios.stepprogressbar.StepProgressBar
