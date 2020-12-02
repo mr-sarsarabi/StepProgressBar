@@ -57,6 +57,7 @@ Look at sample app for more details.
         app:backgroundBarColor="#493A0D"
         app:failureStepColor="#B92926"
         app:innerPadding="6dp"
+        app:stepCount="5"    
         app:successfulStepColor="#FFC107" />
 
 **Java:**
