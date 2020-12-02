@@ -11,3 +11,6 @@ Step 2. Add the dependency
 	dependencies {
 	        implementation 'com.github.mr-sarsarabi:StepProgressBar:v1.0'
 	}
+
+
+![Screenshot of the library outcome.](screenshot.png)
