@@ -15,20 +15,20 @@ public class MainActivity extends AppCompatActivity {
         stepProgressBar.setSuccessfulStepColor(0xfff);
         stepProgressBar.setFailureStepColor(0xfff);
         stepProgressBar.setBackgroundColor(0xfff);
-        stepProgressBar.setInnerPadding(0xfff);
-        stepProgressBar.setStepSates(new Boolean[]{true, false, true, true, true});
+        stepProgressBar.setInnerPadding(Utils.dpToPx(this, 6));
+        stepProgressBar.setStepSates(new Boolean[]{true, false, true, true, true, false, true});
         StepProgressBar stepProgressBar2 = findViewById(R.id.step_progress_bar2);
         stepProgressBar2.setStepCount(7);
         stepProgressBar2.setStepSates(new Boolean[]{false, true, true, true, null, null, null});
         StepProgressBar stepProgressBar3 = findViewById(R.id.step_progress_bar3);
         stepProgressBar3.setStepCount(13);
         stepProgressBar3.setStepSates(new Boolean[]{true, true, false, true, true, false, true,
-                null, null, null,null, null, null
+                null, null, null, null, null, null
         });
         StepProgressBar stepProgressBar4 = findViewById(R.id.step_progress_bar4);
         stepProgressBar4.setStepCount(20);
         stepProgressBar4.setStepSates(new Boolean[]{true, true, false, true, true, false, true,
-                null, null, null,null, null, null,null, null, null,null, null, null,null
+                null, null, null, null, null, null, null, null, null, null, null, null, null
         });
 
 

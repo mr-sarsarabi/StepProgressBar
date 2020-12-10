@@ -11,6 +11,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.Arrays;
+
 public class StepProgressBar extends View {
 
     private int width, height;
@@ -34,6 +36,7 @@ public class StepProgressBar extends View {
     private int successfulStepColor;//user pre-defined variable
     private int failureStepColor;//user pre-defined variable
     private int stepCount;//user pre-defined variable
+    private int mode;
 
     private Paint backgroundPaint, successfulPaint, failurePaint;
     private Rect backgroundRect;
@@ -98,18 +101,18 @@ public class StepProgressBar extends View {
 
         //drawing steps
         for (int i = stepCount - 1; i >= 0; i--) {
-            if (stepSates[i] != null){
+            if (stepSates[i] != null) {
                 //drawing right circle of step
-                canvas.drawCircle(stepsRightCircleX[i], stepCircleY, stepCircleRadius, (stepSates[i])? successfulPaint: failurePaint);
+                canvas.drawCircle(stepsRightCircleX[i], stepCircleY, stepCircleRadius, (stepSates[i]) ? successfulPaint : failurePaint);
                 //drawing step rect
-                canvas.drawRect(stepsRectHStart[i], stepRectVStart, stepsRectHEnd[i], stepRectVEnd,(stepSates[i])? successfulPaint: failurePaint);
+                canvas.drawRect(stepsRectHStart[i], stepRectVStart, stepsRectHEnd[i], stepRectVEnd, (stepSates[i]) ? successfulPaint : failurePaint);
                 if (i == 0) {
                     //first step left circle
-                    canvas.drawCircle(stepsLeftCircleX[i], stepCircleY, stepCircleRadius, (stepSates[i])? successfulPaint: failurePaint);
+                    canvas.drawCircle(stepsLeftCircleX[i], stepCircleY, stepCircleRadius, (stepSates[i]) ? successfulPaint : failurePaint);
                 } else {
                     //drawing left hole
 //                    canvas.drawCircle(stepsLeftCircleX[i], stepCircleY, stepCircleRadius, backgroundPaint);
-                    canvas.drawCircle(stepsRightCircleX[i-1], stepCircleY, stepCircleRadius + innerPadding, backgroundPaint);
+                    canvas.drawCircle(stepsRightCircleX[i - 1], stepCircleY, stepCircleRadius + innerPadding, backgroundPaint);
 
                 }
 
@@ -228,8 +231,24 @@ public class StepProgressBar extends View {
     }
 
     public void setStepSates(Boolean[] stepSates) {
-        this.stepSates = stepSates;
+        setStepSates(stepSates, 0);
+    }
+
+    public void setStepSates(Boolean[] stepSates, int leaveEmptyAtEnd) {
+
+        if (leaveEmptyAtEnd > stepCount - 1){
+            throw new IllegalArgumentException("Parameter leaveEmptyAtEnd cannot be greater than stepCount");
+        }
+
+        if (stepSates.length > stepCount) {
+            Boolean[] trimmedStepStates = Arrays.copyOfRange(stepSates, stepSates.length - stepCount + leaveEmptyAtEnd, stepSates.length + leaveEmptyAtEnd);
+            this.stepSates = trimmedStepStates;
+            Log.e("array", "setStepSates: original:" + stepSates.length + " trimmed:" + trimmedStepStates.length);
+        } else {
+            this.stepSates = stepSates;
+        }
         invalidate();
         requestLayout();
     }
+
 }
