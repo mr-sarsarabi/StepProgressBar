@@ -231,7 +231,7 @@ public class StepProgressBar extends View {
     }
 
     public void setStepSates(Boolean[] stepSates) {
-        setStepSates(stepSates, 0);
+        setStepSates(stepSates, -1);
     }
 
     public void setStepSates(Boolean[] stepSates, int leaveEmptyAtEnd) {
@@ -239,9 +239,15 @@ public class StepProgressBar extends View {
         if (leaveEmptyAtEnd > stepCount - 1){
             throw new IllegalArgumentException("Parameter leaveEmptyAtEnd cannot be greater than stepCount");
         }
+        int firstNullStepIndex = stepSates.length;
+        for (int i = stepSates.length - 1; i >= 0; i--){
+            if (stepSates[i] == null) {
+                firstNullStepIndex = i;
+            }
+        }
+        if (stepSates.length > stepCount && firstNullStepIndex > stepCount) {
 
-        if (stepSates.length > stepCount) {
-            Boolean[] trimmedStepStates = Arrays.copyOfRange(stepSates, stepSates.length - stepCount + leaveEmptyAtEnd, stepSates.length + leaveEmptyAtEnd);
+            Boolean[] trimmedStepStates = Arrays.copyOfRange(stepSates, stepSates.length - stepCount + leaveEmptyAtEnd - (stepSates.length - firstNullStepIndex + 1), stepSates.length + leaveEmptyAtEnd - (stepSates.length - firstNullStepIndex + 1));
             this.stepSates = trimmedStepStates;
             Log.e("array", "setStepSates: original:" + stepSates.length + " trimmed:" + trimmedStepStates.length);
         } else {
