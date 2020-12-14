@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         stepProgressBar.setFailureStepColor(0xfff);
         stepProgressBar.setBackgroundColor(0xfff);
         stepProgressBar.setInnerPadding(Utils.dpToPx(this, 6));
-        stepProgressBar.setStepSates(new Boolean[]{true, false, true, true, true, false, true , null}, 1);
+        stepProgressBar.setStepSates(new Boolean[]{true, false, true, true, true, false, false, true , true , true , null, null, null}, 2);
         StepProgressBar stepProgressBar2 = findViewById(R.id.step_progress_bar2);
         stepProgressBar2.setStepCount(7);
         stepProgressBar2.setStepSates(new Boolean[]{false, true, true, true, null, null, null});
