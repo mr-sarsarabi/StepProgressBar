@@ -19,7 +19,7 @@ This Library is totally free! feel free to use it...
 **Step 2.** Add the dependency
 
 	dependencies {
-	        implementation 'com.github.mr-sarsarabi:StepProgressBar:v1.0'
+	        implementation 'com.github.mr-sarsarabi:StepProgressBar:tag'
 	}
 
 #### Maven:
