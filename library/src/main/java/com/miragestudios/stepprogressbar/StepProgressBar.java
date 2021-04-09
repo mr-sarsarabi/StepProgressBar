@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +57,7 @@ public class StepProgressBar extends View {
     private boolean showStepNumbers;//user pre-defined variable
     private int trimmedStepsCount = 0;
     private int mode;
+    private Typeface typeface;
 
     private Paint backgroundPaint, successfulPaint, failurePaint, textPaint;
     private Rect backgroundRect;
@@ -113,7 +115,6 @@ public class StepProgressBar extends View {
         textPaint.setColor(textColor);
         textPaint.setTextSize(Utils.dpToPx(getContext(), 12));
         textPaint.setAlpha(255);
-
     }
 
     @Override
@@ -337,5 +338,12 @@ public class StepProgressBar extends View {
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
+    }
+
+    public void setTypeface(Typeface typeface) {
+        this.typeface = typeface;
+        if (typeface != null) {
+            textPaint.setTypeface(typeface);
+        }
     }
 }
