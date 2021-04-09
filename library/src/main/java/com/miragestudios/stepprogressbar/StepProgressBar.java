@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import java.util.Arrays;
 
 public class StepProgressBar extends View {
+    int _2dp;
+    int _1dp;
 
     private int width, height;
     private int minStepHeight = 20;//class pre-defined variable (in #init())
@@ -24,6 +26,19 @@ public class StepProgressBar extends View {
     private int backgroundRectHStart, backgroundRectVStart, backgroundRectHEnd, backgroundRectVEnd;
     private int backgroundRectWidht, backgroundRectHeight;
     private int stepWidth, stepHeight;
+    private int stepTextWidhtMax, stepTextHeightMax;
+    private int textHeight1;
+    private int textHeight2;
+    private int textWidht1;
+    private int textWidht2;
+    private int textDiff1;
+    private int textDiff2;
+    private int textBottom1;
+    private int textBottom2;
+    private int textLeft;
+    private int textSize1 = 1;
+    private int textSize2 = 1;
+    private Rect textBounds = new Rect();
     private int firstStepWidth;
     private int[] stepsRectHStart, stepsRectHEnd;
     private int stepRectVStart, stepRectVEnd;
@@ -31,14 +46,18 @@ public class StepProgressBar extends View {
     private int[] stepsLeftCircleX;
     private int stepCircleY;
     private int stepCircleRadius;
+    private int halfStepCircleRadius;
     private int stepOverlay = 3;//class pre-defined variable
     private int backgroundBarColor;//user pre-defined variable
     private int successfulStepColor;//user pre-defined variable
     private int failureStepColor;//user pre-defined variable
+    private int textColor;//user pre-defined variable
     private int stepCount;//user pre-defined variable
+    private boolean showStepNumbers;//user pre-defined variable
+    private int trimmedStepsCount = 0;
     private int mode;
 
-    private Paint backgroundPaint, successfulPaint, failurePaint;
+    private Paint backgroundPaint, successfulPaint, failurePaint, textPaint;
     private Rect backgroundRect;
     /**
      * true: step successful , false: step failure , null: step not reached
@@ -55,6 +74,8 @@ public class StepProgressBar extends View {
 
     public StepProgressBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        _2dp = Utils.dpToPx(getContext(), 2);
+        _1dp = Utils.dpToPx(getContext(), 1);
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.StepProgressBar,
@@ -64,7 +85,9 @@ public class StepProgressBar extends View {
             backgroundBarColor = a.getColor(R.styleable.StepProgressBar_backgroundBarColor, 0x493A0D);
             successfulStepColor = a.getColor(R.styleable.StepProgressBar_successfulStepColor, 0xFFC107);
             failureStepColor = a.getColor(R.styleable.StepProgressBar_failureStepColor, 0xB92926);
+            textColor = a.getColor(R.styleable.StepProgressBar_textColor, 0xFFFFFF);
             stepCount = a.getInteger(R.styleable.StepProgressBar_stepCount, 5);
+            showStepNumbers = a.getBoolean(R.styleable.StepProgressBar_showStepNumbers, false);
         } finally {
             a.recycle();
         }
@@ -85,6 +108,11 @@ public class StepProgressBar extends View {
         failurePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         failurePaint.setColor(failureStepColor);
         failurePaint.setAlpha(255);
+
+        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setColor(textColor);
+        textPaint.setTextSize(Utils.dpToPx(getContext(), 12));
+        textPaint.setAlpha(255);
 
     }
 
@@ -113,7 +141,27 @@ public class StepProgressBar extends View {
                     //drawing left hole
 //                    canvas.drawCircle(stepsLeftCircleX[i], stepCircleY, stepCircleRadius, backgroundPaint);
                     canvas.drawCircle(stepsRightCircleX[i - 1], stepCircleY, stepCircleRadius + innerPadding, backgroundPaint);
-
+                }
+                if (showStepNumbers) {
+                    if (i + trimmedStepsCount + 1 < 10) {
+                        textPaint.setTextSize(textSize1);
+                        canvas.drawText(
+                                (i + trimmedStepsCount + 1) + "",
+                                stepsRectHEnd[i] + stepCircleRadius - textWidht1 - halfStepCircleRadius -
+                                        ((textDiff1 > stepCircleRadius) ? stepCircleRadius : (textDiff1 > halfStepCircleRadius) ? halfStepCircleRadius : 0),
+                                textBottom1,
+                                textPaint
+                        );
+                    } else {
+                        textPaint.setTextSize(textSize2);
+                        canvas.drawText(
+                                (i + trimmedStepsCount + 1) + "",
+                                stepsRectHEnd[i] + stepCircleRadius - textWidht2 - halfStepCircleRadius -
+                                        ((textDiff2 > stepCircleRadius) ? stepCircleRadius : (textDiff2 > halfStepCircleRadius) ? halfStepCircleRadius : 0),
+                                textBottom2,
+                                textPaint
+                        );
+                    }
                 }
 
             }
@@ -151,11 +199,7 @@ public class StepProgressBar extends View {
         } else {//MeasureSpec.AT_MOST
             int minReqWidth = (stepCount * stepCircleRadius * 2) - (stepCount - 1) * stepOverlay +
                     getPaddingRight() + getPaddingLeft() + innerPadding * 2;
-            if (suggestedWidth > minReqWidth) {
-                width = suggestedWidth;
-            } else {
-                width = minReqWidth;
-            }
+            width = Math.max(suggestedWidth, minReqWidth);
         }
         finalHeightMS = resolveSizeAndState(height, heightMeasureSpec, 1);
         finalWidthMS = resolveSizeAndState(width, widthMeasureSpec, 1);
@@ -185,6 +229,7 @@ public class StepProgressBar extends View {
         backgroundRectVEnd = bottomEnd;
         stepHeight = backgroundRectHeight - innerPadding * 2;
         stepCircleRadius = stepHeight / 2;
+        halfStepCircleRadius = stepCircleRadius / 2;
         stepWidth = (rightEnd - leftStart - innerPadding * 2 - stepCircleRadius/*for extra first step widht*/) / stepCount + stepOverlay;
         firstStepWidth = stepWidth + stepCircleRadius;
         stepRectVStart = topStart + innerPadding;
@@ -203,6 +248,38 @@ public class StepProgressBar extends View {
         stepsLeftCircleX = stepsRectHStart;
         stepsRightCircleX = stepsRectHEnd;
 
+        stepTextWidhtMax = (int) (stepWidth - stepCircleRadius * 1.35);
+        stepTextHeightMax = stepHeight - _2dp;
+
+        textSize1 = 1;
+        textSize2 = 1;
+        while (textSize1 < 60) {
+            textPaint.setTextSize(textSize1);
+            textPaint.getTextBounds("5", 0, 1, textBounds);
+            if (textBounds.right - textBounds.left < stepTextWidhtMax) {
+                if (textBounds.bottom - textBounds.top < stepTextHeightMax - _1dp * 3.5) {
+                    textSize1++;
+                } else break;
+            } else break;
+        }
+        textHeight1 = textBounds.bottom - textBounds.top;
+        textWidht1 = textBounds.right - textBounds.left;
+        textBottom1 = stepRectVEnd - (stepHeight - textHeight1) / 2;
+
+        while (textSize2 < 60) {
+            textPaint.setTextSize(textSize2);
+            textPaint.getTextBounds("55", 0, 2, textBounds);
+            if (textBounds.right - textBounds.left < stepTextWidhtMax) {
+                if (textBounds.bottom - textBounds.top < stepTextHeightMax - _1dp * 3.5) {
+                    textSize2++;
+                } else break;
+            } else break;
+        }
+        textHeight2 = textBounds.bottom - textBounds.top;
+        textWidht2 = textBounds.right - textBounds.left;
+        textBottom2 = stepRectVEnd - (stepHeight - textHeight2) / 2;
+        textDiff1 = (stepWidth + stepCircleRadius / 2 - textWidht1) - (2 * stepCircleRadius);
+        textDiff2 = (stepWidth + stepCircleRadius / 2 - textWidht2) - (2 * stepCircleRadius);
         backgroundRect = new Rect(backgroundRectHStart, backgroundRectVStart, backgroundRectHEnd, backgroundRectVEnd);
     }
 
@@ -247,10 +324,10 @@ public class StepProgressBar extends View {
         }
         if (stepSates.length > stepCount && firstNullStepIndex > stepCount) {
 
-            Boolean[] trimmedStepStates = Arrays.copyOfRange(stepSates, stepSates.length - stepCount + leaveEmptyAtEnd - (stepSates.length - firstNullStepIndex), stepSates.length + leaveEmptyAtEnd - (stepSates.length - firstNullStepIndex));
-//            Log.e("array", "setStepSates: original:" + stepSates.length + " trimmed:" + trimmedStepStates.length);
+            //            Log.e("array", "setStepSates: original:" + stepSates.length + " trimmed:" + trimmedStepStates.length);
 //            Log.e("array", "setStepSates:\noriginal:" + Arrays.toString(stepSates) + "\n trimmed:" + Arrays.toString(trimmedStepStates));
-            this.stepSates = trimmedStepStates;
+            this.stepSates = Arrays.copyOfRange(stepSates, stepSates.length - stepCount + leaveEmptyAtEnd - (stepSates.length - firstNullStepIndex), stepSates.length + leaveEmptyAtEnd - (stepSates.length - firstNullStepIndex));
+            trimmedStepsCount = stepSates.length - stepCount + leaveEmptyAtEnd - (stepSates.length - firstNullStepIndex);
         } else {
             this.stepSates = stepSates;
         }
@@ -258,4 +335,7 @@ public class StepProgressBar extends View {
         requestLayout();
     }
 
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
 }

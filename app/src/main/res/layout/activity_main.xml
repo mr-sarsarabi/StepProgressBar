@@ -15,6 +15,8 @@
         app:backgroundBarColor="#493A0D"
         app:failureStepColor="#B92926"
         app:innerPadding="6dp"
+        app:showStepNumbers="true"
+        app:textColor="#fff"
         app:successfulStepColor="#FFC107" />
 
     <com.miragestudios.stepprogressbar.StepProgressBar
@@ -25,16 +27,22 @@
         app:backgroundBarColor="#493A0D"
         app:failureStepColor="#B92926"
         app:innerPadding="8dp"
+        app:showStepNumbers="true"
+        app:textColor="#fff"
         app:successfulStepColor="#FFC107" />
+
     <com.miragestudios.stepprogressbar.StepProgressBar
         android:id="@+id/step_progress_bar3"
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:layout_margin="16dp"
         app:backgroundBarColor="#493A0D"
+        app:showStepNumbers="true"
         app:failureStepColor="#B92926"
+        app:textColor="#fff"
         app:innerPadding="6dp"
         app:successfulStepColor="#FFC107" />
+
     <com.miragestudios.stepprogressbar.StepProgressBar
         android:id="@+id/step_progress_bar4"
         android:layout_width="match_parent"
@@ -43,7 +51,9 @@
         app:backgroundBarColor="#493A0D"
         app:failureStepColor="#B92926"
         app:innerPadding="6dp"
+        app:showStepNumbers="true"
+        app:textColor="#fff"
         app:successfulStepColor="#FFC107" />
-<!--    app:stepCount="5"-->
+    <!--    app:stepCount="5"-->
 
 </LinearLayout>
